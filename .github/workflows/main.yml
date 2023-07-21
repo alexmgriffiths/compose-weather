@@ -1,0 +1,21 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy
+        uses: Burnett01/rsync-deployments@4.0
+        with:
+          path: "."
+          switches: -avzr --delete --exclude=".*"
+          remote_path: ${{ secrets.DEPLOYMENT_REMOTE_PATH }}
+          remote_host: ${{ secrets.DEPLOYMENT_HOST }}
+          remote_port: ${{ secrets.DEPLOYMENT_PORT }}
+          remote_user: ${{ secrets.DEPLOYMENT_USER }}
+          remote_key: ${{ secrets.DEPLOYMENT_PRIVATE_KEY }}
